@@ -1,9 +1,15 @@
 package com.example.brom.listviewjsonapp;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -11,6 +17,9 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 
 // Create a new class, Mountain, that can hold your JSON data
@@ -25,11 +34,38 @@ import java.net.URL;
 
 
 public class MainActivity extends AppCompatActivity {
+    private String[] mountainNames = {"Matterhorn","Mont Blanc","Denali"};
+    private String[] mountainLocations = {"Alps","Alps","Alaska"};
+    private int[] mountainHeights ={4478,4808,6190};
+
+    private List<Mountains> namnen = new ArrayList<Mountains>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        for (int i=0; i<mountainNames.length;i++){
+            Mountains m = new Mountains(mountainNames[i],mountainLocations[i], mountainHeights[i]);
+            namnen.add(m);
+        }
+
+        List<String> listData = new ArrayList<String>(Arrays.asList(mountainNames));
+
+        ArrayAdapter adapter = new ArrayAdapter(getApplicationContext(),R.layout.list_item_textview,
+                R.id.my_item_textview, namnen);
+
+        ListView myListView = (ListView)findViewById(R.id.my_listview);
+        myListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Mountains n = namnen.get(position);
+                Toast.makeText(MainActivity.this,n.fakta(), Toast.LENGTH_LONG).show();
+                //Toast.makeText(MainActivity.this, mountainNames[position] + mountainHeights[position]  + mountainLocations[position], Toast.LENGTH_SHORT).show();
+
+            }
+        });
+        myListView.setAdapter(adapter);
     }
 
     private class FetchData extends AsyncTask<Void,Void,String>{
