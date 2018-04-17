@@ -11,6 +11,10 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -44,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        new FetchData().execute();
         for (int i=0; i<mountainNames.length;i++){
             Mountains m = new Mountains(mountainNames[i],mountainLocations[i], mountainHeights[i]);
             namnen.add(m);
@@ -79,9 +83,10 @@ public class MainActivity extends AppCompatActivity {
             // Will contain the raw JSON response as a Java string.
             String jsonStr = null;
 
+
             try {
                 // Construct the URL for the Internet service
-                URL url = new URL("_ENTER_THE_URL_TO_THE_PHP_SERVICE_SERVING_JSON_HERE_");
+                URL url = new URL("http://wwwlab.iit.his.se/brom/kurser/mobilprog/dbservice/admin/getdataasjson.php?type=brom");
 
                 // Create the request to the PHP-service, and open the connection
                 urlConnection = (HttpURLConnection) url.openConnection();
@@ -137,6 +142,22 @@ public class MainActivity extends AppCompatActivity {
 
             // Implement a parsing code that loops through the entire JSON and creates objects
             // of our newly created Mountain class.
+
+            Log.d("Céline", o);
+
+
+            try {
+                JSONArray allt=new JSONArray(o);
+                for (int r=0;r<allt.length();r++){
+                    JSONObject obj=allt.getJSONObject(r);
+                    String name=obj.getString("name");
+                    String location=obj.getString("location");
+                    Log.d("Céline", Integer.toString(r) + obj.getString("ID") + name + obj.getString("type") + location);
+                }
+
+            } catch (JSONException e) {
+                Log.e("Céline","E:"+e.getMessage());
+            }
         }
     }
 }
