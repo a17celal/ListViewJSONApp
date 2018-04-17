@@ -151,8 +151,9 @@ public class MainActivity extends AppCompatActivity {
                 for (int r=0;r<allt.length();r++){
                     JSONObject obj=allt.getJSONObject(r);
                     String name=obj.getString("name");
-                    String location=obj.getString("location");
-                    Log.d("Céline", Integer.toString(r) + obj.getString("ID") + name + obj.getString("type") + location);
+                    String size=obj.getString("size");
+                    String cost=obj.getString("cost");
+                    Log.d("Céline", Integer.toString(r) + obj.getString("ID") + name + obj.getString("type") + size + cost);
                 }
 
             } catch (JSONException e) {
