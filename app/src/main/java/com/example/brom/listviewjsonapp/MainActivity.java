@@ -155,6 +155,7 @@ public class MainActivity extends AppCompatActivity {
                     int cost=obj.getInt("cost");
                     String location=obj.getString("location");
                     Log.d("Céline", Integer.toString(r) + obj.getString("ID") + name + obj.getString("type") + height + cost + location);
+                    //Mountains temp= new Mountains(name[r], height[r], cost[r], location[r]);
                 }
 
             } catch (JSONException e) {
