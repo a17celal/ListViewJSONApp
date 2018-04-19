@@ -43,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
     private int[] mountainHeights ={4478,4808,6190};
 
     private List<Mountains> namnen = new ArrayList<Mountains>();
+    private  ArrayAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,13 +51,12 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         new FetchData().execute();
         for (int i=0; i<mountainNames.length;i++){
-            Mountains m = new Mountains(mountainNames[i],mountainLocations[i], mountainHeights[i]);
-            namnen.add(m);
+           Mountains m = new Mountains(mountainNames[i],mountainLocations[i], mountainHeights[i]);namnen.add(m);
         }
 
         List<String> listData = new ArrayList<String>(Arrays.asList(mountainNames));
 
-        ArrayAdapter adapter = new ArrayAdapter(getApplicationContext(),R.layout.list_item_textview,
+        adapter = new ArrayAdapter(getApplicationContext(),R.layout.list_item_textview,
                 R.id.my_item_textview, namnen);
 
         ListView myListView = (ListView)findViewById(R.id.my_listview);
@@ -73,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private class FetchData extends AsyncTask<Void,Void,String>{
+
         @Override
         protected String doInBackground(Void... params) {
             // These two variables need to be declared outside the try/catch
@@ -148,14 +149,18 @@ public class MainActivity extends AppCompatActivity {
 
             try {
                 JSONArray allt=new JSONArray(o);
+                adapter.clear();
                 for (int r=0;r<allt.length();r++){
                     JSONObject obj=allt.getJSONObject(r);
                     String name=obj.getString("name");
                     int height=obj.getInt("size");
                     int cost=obj.getInt("cost");
                     String location=obj.getString("location");
-                    Log.d("Céline", Integer.toString(r) + obj.getString("ID") + name + obj.getString("type") + height + cost + location);
-                    //Mountains temp= new Mountains(name[r], height[r], cost[r], location[r]);
+                    String ID=obj.getString("ID");
+                    String typ=obj.getString("type");
+                    Log.d("Céline", Integer.toString(r) + ID + name + typ + height + cost + location);
+                    Mountains temp= new Mountains(name, location, height, ID, typ, cost);
+                    adapter.add(temp);
                 }
 
             } catch (JSONException e) {

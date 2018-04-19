@@ -10,8 +10,7 @@ public class Mountains {
     private int hojd;
     private String ID;
     private String typ;
-    private String cost;
-    private String auxdata;
+    private int cost;
 
     Mountains(String n, String p, int h) {
         namn=n;
@@ -19,14 +18,13 @@ public class Mountains {
         hojd=h;
     }
 
-    Mountains(String n, String p, int h, String i, String t, String c, String a) {
+    Mountains(String n, String p, int h, String i, String t, int c) {
         namn=n;
         plats=p;
         hojd=h;
         ID=i;
         typ=t;
         cost=c;
-        auxdata=a;
     }
 
     public String toString() {
